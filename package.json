@@ -1,5 +1,4 @@
 {
-  
   "name": "outside",
   "version": "2.0.0",
   "description": "Boilerplate for WDD 330 SleepOutside project",
@@ -34,5 +33,4 @@
     "last 3 ios_saf versions",
     "last 3 safari versions"
   ]
-
 }
