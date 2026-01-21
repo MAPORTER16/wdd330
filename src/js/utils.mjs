@@ -37,5 +37,37 @@ export function renderListWithTemplate(templateFn, parentElement, list, position
     parentElement.innerHTML = '';
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(''));
+}
 
+// Get the total number of items in the cart
+export function getCartCount() {
+  const cart = getLocalStorage("so-cart") || [];
+  return cart.reduce((total, item) => total + (item.quantity || 1), 0);
+}
+
+// Update the cart count badge in the header
+export function updateCartBadge() {
+  const count = getCartCount();
+  const badge = document.querySelector(".cart-badge");
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? "flex" : "none";
+  }
+}
+
+// Remove item from cart by product ID
+export function removeFromCart(productId) {
+  let cart = getLocalStorage("so-cart") || [];
+  cart = cart.filter(item => item.Id !== productId);
+  setLocalStorage("so-cart", cart);
+  return cart;
+}
+
+// Calculate cart subtotal
+export function getCartSubtotal() {
+  const cart = getLocalStorage("so-cart") || [];
+  return cart.reduce((total, item) => {
+    const quantity = item.quantity || 1;
+    return total + (item.FinalPrice * quantity);
+  }, 0);
 }
