@@ -38,3 +38,30 @@ export function renderListWithTemplate(template, parentElement, list, position =
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
+
+export function discountIndicator(product) {
+  if (product.SuggestedRetailPrice > product.FinalPrice) {
+    const discount =
+      ((product.SuggestedRetailPrice - product.FinalPrice) /
+        product.SuggestedRetailPrice) *
+      100;
+
+    return `
+      <span class="discount-badge">
+        SALE -${Math.round(discount)}%
+      </span>
+    `;
+  }
+
+  return "";
+}
+
+export function updateCartCount() {
+  const cartItems = JSON.parse(localStorage.getItem("so-cart")) || [];
+  const cartCountElement = document.getElementById("cartCount");
+
+  if (cartCountElement) {
+    cartCountElement.textContent = cartItems.length;
+  }
+}
+
