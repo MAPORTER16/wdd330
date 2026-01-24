@@ -16,8 +16,8 @@ function renderCartContents() {
 function cartItemTemplate(item) {
   return `
   <li class="cart-card divider" data-id="${item.Id}">
-    <a href="#" class="cart-card__image">
-      <img src="${item.Image}" alt="${item.Name}">
+    <a href="../product_pages/?product=${item.Id}" class="cart-card__image">
+      <img src="${item.Image.replace('../images', '/images')}" alt="${item.Name}">
     </a>
 
     <h2 class="card__name">${item.Name}</h2>

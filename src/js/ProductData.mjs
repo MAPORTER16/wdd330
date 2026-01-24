@@ -1,6 +1,6 @@
 export default class ProductData {
   constructor(category) {
-    this.path = `../public/json/${category}.json`;
+    this.path = `/json/${category}.json`;
   }
 
   async getData() {
