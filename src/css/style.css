@@ -312,23 +312,20 @@ footer {
   text-align: center;
 }
 
-.alert-container {
+#alertContainer {
   position: fixed;
   top: 20px;
   right: 20px;
-  width: 250px;
   z-index: 9999;
 }
 
 .alert {
-  background-color: #4caf50; /* green by default */
-  color: white;
-  padding: 12px 20px;
+  padding: 12px 18px;
   margin-bottom: 10px;
   border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-weight: 600;
   opacity: 0;
-  transform: translateY(-20px);
+  transform: translateY(-10px);
   transition: all 0.4s ease;
 }
 
@@ -337,13 +334,23 @@ footer {
   transform: translateY(0);
 }
 
-.alert.error {
-  background-color: #f44336; /* red for errors */
+/* Types */
+
+.alert.success {
+  background-color: #4caf50;
+  color: white;
 }
 
-.alert.info {
-  background-color: #2196f3; /* blue for info */
+.alert.warning {
+  background-color: #ff9800;
+  color: white;
 }
+.alert.error {
+  background-color: #f44336;
+  color: white;
+}
+
+
 
 
 

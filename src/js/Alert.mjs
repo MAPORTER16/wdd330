@@ -4,19 +4,24 @@ export default class Alert {
   }
 
   show(message, type = "success", duration = 3000) {
+    if (!this.container) return;
+
     const alert = document.createElement("div");
-    alert.classList.add("alert", type);
+    alert.className = `alert ${type}`;
     alert.textContent = message;
 
     this.container.appendChild(alert);
 
-    // Trigger animation
-    setTimeout(() => alert.classList.add("show"), 10);
+    requestAnimationFrame(() => {
+      alert.classList.add("show");
+    });
 
-    // Remove alert after duration
     setTimeout(() => {
       alert.classList.remove("show");
-      setTimeout(() => this.container.removeChild(alert), 400);
+
+      setTimeout(() => {
+        alert.remove();
+      }, 400);
     }, duration);
   }
 }
