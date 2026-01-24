@@ -121,6 +121,7 @@ button {
   padding-top: 1em;
   position: relative;
   text-align: center;
+  position: relative;
 }
 
 .cart svg {
@@ -175,6 +176,7 @@ button {
   padding: 0.5em;
   border: 1px solid var(--light-grey);
   max-width: 250px;
+  position: relative;
 }
 
 .product-card h2,
@@ -261,3 +263,94 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+/* ADDINGS */
+
+.cart-total {
+  text-align: right;
+  font-size: 1.2em;
+  padding: 1rem;
+}
+
+.discount-badge {
+  background: red;
+  color: white;
+  font-size: 0.75em;
+  padding: 0.3em 0.6em;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  border-radius: 4px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: gray;
+  font-size: 0.8em;
+  margin-left: 6px;
+}
+
+/* Cart summary is optional */
+.cart-summary {
+  padding: 1rem;
+  text-align: right;
+  font-size: 1.3em;
+  border-top: 2px solid var(--primary-color);
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 0.7em;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+  min-width: 18px;
+  text-align: center;
+}
+
+#alertContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.alert {
+  padding: 12px 18px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.4s ease;
+}
+
+.alert.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Types */
+
+.alert.success {
+  background-color: #4caf50;
+  color: white;
+}
+
+.alert.warning {
+  background-color: #ff9800;
+  color: white;
+}
+.alert.error {
+  background-color: #f44336;
+  color: white;
+}
+
+
+
+
+

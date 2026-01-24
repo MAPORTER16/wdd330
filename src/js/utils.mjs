@@ -1,40 +1,67 @@
-// wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
 }
-// or a more concise version if you are into that sort of thing:
-// export const qs = (selector, parent = document) => parent.querySelector(selector);
 
-// retrieve data from localstorage
 export function getLocalStorage(key) {
-  return JSON.parse(localStorage.getItem(key));
+  try {
+    return JSON.parse(localStorage.getItem(key));
+  } catch {
+    return null;
+  }
 }
-// save data to local storage
+
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
-// set a listener for both touchend and click
+
 export function setClick(selector, callback) {
-  qs(selector).addEventListener("touchend", (event) => {
+  const el = qs(selector);
+  if (!el) return;
+
+  el.addEventListener("touchend", (event) => {
     event.preventDefault();
     callback();
   });
-  qs(selector).addEventListener("click", callback);
+
+  el.addEventListener("click", callback);
 }
 
-// get the product id from the query string
 export function getParam(param) {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const product = urlParams.get(param);
-  return product
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
 }
 
-export function renderListWithTemplate(template, parentElement, list, position = "afterbegin", clear = false) {
-  const htmlStrings = list.map(template);
-  // if clear is true we need to clear out the contents of the parent.
-  if (clear) {
-    parentElement.innerHTML = "";
+export function renderListWithTemplate(
+  template,
+  parentElement,
+  list,
+  position = "afterbegin",
+  clear = false
+) {
+  if (clear) parentElement.innerHTML = "";
+
+  const html = list.map(template).join("");
+  parentElement.insertAdjacentHTML(position, html);
+}
+
+export function discountIndicator(product) {
+  if (product.SuggestedRetailPrice > product.FinalPrice) {
+    const discount =
+      ((product.SuggestedRetailPrice - product.FinalPrice) /
+        product.SuggestedRetailPrice) *
+      100;
+
+    return `<span class="discount-badge">SALE -${Math.round(discount)}%</span>`;
   }
-  parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
+
+  return "";
+}
+
+export function updateCartCount() {
+  const cartItems = getLocalStorage("so-cart") || [];
+  const cartCount = document.getElementById("cartCount");
+
+  if (cartCount) {
+    cartCount.textContent = cartItems.length;
+  }
 }

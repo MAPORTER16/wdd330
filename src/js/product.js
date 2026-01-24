@@ -1,36 +1,41 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
+import Alert from "./Alert.mjs";
 
 const dataSource = new ProductData("tents");
+const alert = new Alert("alertContainer");
 
-function addProductToCart(product) {
+async function addToCartHandler() {
+  const addToCartBtn = document.getElementById("addToCart");
+  const productId = addToCartBtn.dataset.id;
+
+  if (!productId) {
+    console.error("Product ID missing");
+    return;
+  }
+
+  const product = await dataSource.findProductById(productId);
+
   let cartItems = getLocalStorage("so-cart") || [];
-  // Ensure cartItems is always an array
-  if (!Array.isArray(cartItems)) {
-    cartItems = [];
+
+  const exists = cartItems.some(item => item.Id === product.Id);
+
+  if (exists) {
+    alert.show("This item is already in your cart!", "warning");
+    return;
   }
 
-  //Check if the product already exists in cart
-  const existingItem = cartItems.find((item) => item.Id === product.Id);
-
-  if (existingItem) {
-    //If it exists, increase quantity
-    existingItem.quantity = (existingItem.quantity || 1) + 1;
-  } else {
-    //if new, add with quantity 1
-    product.quantity = 1;
-    cartItems.push(product);
-  }
-
+  cartItems.push(product);
   setLocalStorage("so-cart", cartItems);
-}
-// add to cart button event handler
-async function addToCartHandler(e) {
-  const product = await dataSource.findProductById(e.target.dataset.id);
-  addProductToCart(product);
+  updateCartCount();
+
+  alert.show("Item added to cart successfully!", "success");
 }
 
-// add listener to Add to Cart button
-document
-  .getElementById("addToCart")
-  .addEventListener("click", addToCartHandler);
+
+// BUTTON LISTENER
+const addToCartBtn = document.getElementById("addToCart");
+
+if (addToCartBtn) {
+  addToCartBtn.addEventListener("click", addToCartHandler);
+}
