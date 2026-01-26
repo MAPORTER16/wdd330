@@ -23,7 +23,7 @@ export default class ProductDetails {
     addProductToCart() {
         const cartItems = getLocalStorage("so-cart") || [];
         cartItems.push(this.product);
-        setLocalStorage("so-cart", cartitems);
+        setLocalStorage("so-cart", cartItems);
     }
 
     renderProductDetails() {
@@ -33,13 +33,36 @@ export default class ProductDetails {
 
 function productDetailsTemplate(product) {
     document.querySelector('h2').textContent = product.Brand.Name;
-    document.QuerySelector('h3').textContent = product.NameWithoutBrand;
+    document.querySelector('h3').textContent = product.NameWithoutBrand;
 
     const productImage = document.getElementById('productImage');
-    productImage.src = product.Image;
+    productImage.src = product.Images.PrimaryLarge;
     productImage.alt = product.NameWithoutBrand;
 
-    document.getElementById('productPrice').textContent = product.FinalPrice;
+    // Check for discount and display appropriately
+    const priceElement = document.getElementById('productPrice');
+    if (product.SuggestedRetailPrice && product.FinalPrice < product.SuggestedRetailPrice) {
+        const discountPercent = Math.round((1 - product.FinalPrice / product.SuggestedRetailPrice) * 100);
+        const savings = (product.SuggestedRetailPrice - product.FinalPrice).toFixed(2);
+
+        // Create and prepend discount flag
+        const discountFlag = document.createElement('div');
+        discountFlag.className = 'discount-flag';
+        discountFlag.innerHTML = `
+            <span class="discount-percent">${discountPercent}% OFF</span>
+            <span class="discount-savings">You save $${savings}!</span>
+        `;
+        document.querySelector('.product-detail').prepend(discountFlag);
+
+        // Show original and sale price
+        priceElement.innerHTML = `
+            <span class="original-price">$${product.SuggestedRetailPrice}</span>
+            <span class="sale-price">$${product.FinalPrice}</span>
+        `;
+    } else {
+        priceElement.textContent = `$${product.FinalPrice}`;
+    }
+
     document.getElementById('productColor').textContent = product.Colors[0].ColorName;
     document.getElementById('productDesc').innerHTML = product.DescriptionHtmlSimple;
 

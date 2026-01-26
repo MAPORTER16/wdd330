@@ -27,7 +27,7 @@ export function getParam(param) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const product = urlParams.get(param);
-  return product;
+  return product
 }
 
 export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false) {
@@ -39,35 +39,29 @@ export function renderListWithTemplate(templateFn, parentElement, list, position
   parentElement.insertAdjacentHTML(position, htmlStrings.join(''));
 }
 
-// Get the total number of items in the cart
-export function getCartCount() {
-  const cart = getLocalStorage("so-cart") || [];
-  return cart.reduce((total, item) => total + (item.quantity || 1), 0);
-}
-
-// Update the cart count badge in the header
-export function updateCartBadge() {
-  const count = getCartCount();
-  const badge = document.querySelector(".cart-badge");
-  if (badge) {
-    badge.textContent = count;
-    badge.style.display = count > 0 ? "flex" : "none";
+// Render a single template into a parent element
+export function renderWithTemplate(template, parentElement, data, callback) {
+  parentElement.innerHTML = template;
+  if (callback) {
+    callback(data);
   }
 }
 
-// Remove item from cart by product ID
-export function removeFromCart(productId) {
-  let cart = getLocalStorage("so-cart") || [];
-  cart = cart.filter(item => item.Id !== productId);
-  setLocalStorage("so-cart", cart);
-  return cart;
+// Load a template from a file path
+export async function loadTemplate(path) {
+  const res = await fetch(path);
+  const template = await res.text();
+  return template;
 }
 
-// Calculate cart subtotal
-export function getCartSubtotal() {
-  const cart = getLocalStorage("so-cart") || [];
-  return cart.reduce((total, item) => {
-    const quantity = item.quantity || 1;
-    return total + (item.FinalPrice * quantity);
-  }, 0);
+// Load header and footer templates
+export async function loadHeaderFooter() {
+  const headerTemplate = await loadTemplate("/partials/header.html");
+  const footerTemplate = await loadTemplate("/partials/footer.html");
+
+  const headerElement = document.querySelector("#main-header");
+  const footerElement = document.querySelector("#main-footer");
+
+  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(footerTemplate, footerElement);
 }
