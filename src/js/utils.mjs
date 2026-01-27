@@ -64,4 +64,53 @@ export async function loadHeaderFooter() {
 
   renderWithTemplate(headerTemplate, headerElement);
   renderWithTemplate(footerTemplate, footerElement);
+
+  // Update cart count after header loads
+  updateCartCount();
+
+  // Initialize back to top button
+  initBackToTop();
+}
+
+// Update cart badge count
+export function updateCartCount() {
+  const cartItems = getLocalStorage("so-cart") || [];
+  const cartCount = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
+  const badge = document.getElementById("cart-count");
+  if (badge) {
+    badge.textContent = cartCount;
+    badge.style.display = cartCount > 0 ? "flex" : "none";
+  }
+}
+
+// Initialize back to top button
+export function initBackToTop() {
+  // Create button if it doesn't exist
+  let backToTopBtn = document.getElementById("backToTop");
+  if (!backToTopBtn) {
+    backToTopBtn = document.createElement("button");
+    backToTopBtn.id = "backToTop";
+    backToTopBtn.className = "back-to-top";
+    backToTopBtn.setAttribute("aria-label", "Back to top");
+    backToTopBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 4l-8 8h5v8h6v-8h5z" />
+      </svg>
+    `;
+    document.body.appendChild(backToTopBtn);
+  }
+
+  // Show/hide on scroll
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      backToTopBtn.classList.add("show");
+    } else {
+      backToTopBtn.classList.remove("show");
+    }
+  });
+
+  // Scroll to top on click
+  backToTopBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 }
