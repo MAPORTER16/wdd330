@@ -154,6 +154,94 @@ button {
 .products {
   margin-top: 2rem;
   padding: 1rem;
+  text-align: center;
+}
+
+.products h2 {
+  font-size: 1.8rem;
+  color: var(--primary-color, #1a1a2e);
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.products h2::after {
+  content: '';
+  display: block;
+  width: 60%;
+  height: 3px;
+  background: var(--accent-color, #f39c12);
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+
+/* Category card styles */
+.category-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.category-card {
+  flex: 1 1 200px;
+  max-width: 220px;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.category-card a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: var(--dark-grey);
+}
+
+.category-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover img {
+  transform: scale(1.1);
+}
+
+.category-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color, #1a1a2e);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.category-card::after {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color, #f39c12), var(--primary-color, #1a1a2e));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.category-card:hover::after {
+  transform: scaleX(1);
 }
 
 .product-list {
