@@ -8,7 +8,6 @@ export default defineConfig({
 
   build: {
     outDir: "../dist",
-    emptyOutDir: true,  // 🔥 prevents broken old files
     rollupOptions: {
       input: {
         main: resolve(__dirname, "src/index.html"),
