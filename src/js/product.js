@@ -1,9 +1,8 @@
 import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
+import { getParam } from "./utils.mjs";
 import Alert from "./Alert.mjs";
 
-const dataSource = new ProductData("tents");
-const alert = new Alert("alertContainer");
 
 // BUTTON
 const addToCartBtn = document.getElementById("addToCart");
@@ -22,16 +21,19 @@ async function addToCartHandler() {
 
   const exists = cartItems.some(item => item.Id === product.Id);
 
-  if (exists) {
-    alert.show("This item is already in your cart!", "warning");
-    return;
-  }
+function addToCartHandler() {
+  // Grab product info and save to localStorage
+  const product = {
+    id: getParam("product"),
+    name: document.querySelector("h3").innerText,
+    price: document.getElementById("productPrice").innerText,
+  };
 
-  cartItems.push(product);
-  setLocalStorage("so-cart", cartItems);
-  updateCartCount();
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.push(product);
+  localStorage.setItem("cart", JSON.stringify(cart));
 
-  alert.show("Item added to cart successfully!", "success");
+  alert("Added to cart!");
 }
 
 // EVENT LISTENER
