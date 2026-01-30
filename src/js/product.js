@@ -5,12 +5,14 @@ import Alert from "./Alert.mjs";
 const dataSource = new ProductData("tents");
 const alert = new Alert("alertContainer");
 
+// BUTTON
+const addToCartBtn = document.getElementById("addToCart");
+
 async function addToCartHandler() {
-  const addToCartBtn = document.getElementById("addToCart");
   const productId = addToCartBtn.dataset.id;
 
   if (!productId) {
-    console.error("Product ID missing");
+    alert.show("Product ID missing", "error");
     return;
   }
 
@@ -32,10 +34,7 @@ async function addToCartHandler() {
   alert.show("Item added to cart successfully!", "success");
 }
 
-
-// BUTTON LISTENER
-const addToCartBtn = document.getElementById("addToCart");
-
+// EVENT LISTENER
 if (addToCartBtn) {
   addToCartBtn.addEventListener("click", addToCartHandler);
 }
