@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   root: "src/",
-  base: "./",           // 🔥 REQUIRED for Render
+  base: "/wdd330/",           // 🔥 REQUIRED for Render before was ("./")
   envDir: "../",
 
   build: {
