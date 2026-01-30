@@ -1,6 +1,8 @@
 import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
 import Alert from "./Alert.mjs";
 
+
+
 const alert = new Alert("alertContainer");
 
 export default class ProductDetails {

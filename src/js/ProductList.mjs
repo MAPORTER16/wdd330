@@ -3,7 +3,8 @@ import { renderListWithTemplate, discountIndicator } from "./utils.mjs";
 function productCardTemplate(product) {
   return `
   <li class="product-card">
-    <a href="product_pages/?product=${product.Id}">
+    <a href="product_pages/product.html?product=${product.Id}">
+
 
       ${discountIndicator(product)}
 
