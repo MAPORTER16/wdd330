@@ -4,8 +4,22 @@ import { getParam } from "./utils.mjs";
 import Alert from "./Alert.mjs";
 
 
+// BUTTON
 const addToCartBtn = document.getElementById("addToCart");
-addToCartBtn.addEventListener("click", addToCartHandler);
+
+async function addToCartHandler() {
+  const productId = addToCartBtn.dataset.id;
+
+  if (!productId) {
+    alert.show("Product ID missing", "error");
+    return;
+  }
+
+  const product = await dataSource.findProductById(productId);
+
+  let cartItems = getLocalStorage("so-cart") || [];
+
+  const exists = cartItems.some(item => item.Id === product.Id);
 
 function addToCartHandler() {
   // Grab product info and save to localStorage
@@ -22,4 +36,7 @@ function addToCartHandler() {
   alert("Added to cart!");
 }
 
-
+// EVENT LISTENER
+if (addToCartBtn) {
+  addToCartBtn.addEventListener("click", addToCartHandler);
+}
