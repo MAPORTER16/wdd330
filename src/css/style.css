@@ -280,6 +280,12 @@ button {
   padding: 0.5em;
   border: 1px solid var(--light-grey);
   max-width: 250px;
+  border-radius: 12px;
+  background: #fff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
 }
 
 .product-card h2,
@@ -295,6 +301,12 @@ button {
 .card__name {
   font-size: 1em;
 }
+.product-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.16);
+  z-index: 10;
+}
+
 
 /* End product list card */
 
