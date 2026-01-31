@@ -34,5 +34,19 @@ export default class ShoppingCart {
     }
 
     renderListWithTemplate(cartItemTemplate, parentElement, cartItems, "afterbegin", true);
+
+    // Calculate and display cart total
+    const total = cartItems.reduce((sum, item) => sum + item.FinalPrice * (item.quantity || 1), 0);
+    const totalEl = document.getElementById("cart-total");
+    const totalAmount = document.getElementById("total-amount");
+    const checkoutBtn = document.getElementById("checkout-btn");
+
+    if (totalEl && totalAmount) {
+      totalAmount.textContent = `$${total.toFixed(2)}`;
+      totalEl.style.display = "block";
+    }
+    if (checkoutBtn) {
+      checkoutBtn.style.display = "block";
+    }
   }
 }
