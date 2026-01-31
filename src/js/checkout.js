@@ -12,16 +12,14 @@ document.getElementById("zip").addEventListener("blur", () => {
 });
 
 // Handle form submission
-document.getElementById("checkout-form").addEventListener("submit", async (e) => {
+document.getElementById("checkout-form").addEventListener("submit", (e) => {
   e.preventDefault();
   const form = document.getElementById("checkout-form");
 
-  try {
-    const response = await myCheckout.checkout(form);
-    console.log("Order response:", response);
-    alert("Order placed successfully!");
-  } catch (err) {
-    console.error("Checkout error:", err);
-    alert("There was a problem placing your order. Please try again.");
+  const isValid = form.checkValidity();
+  form.reportValidity();
+
+  if (isValid) {
+    myCheckout.checkout(form);
   }
 });

@@ -68,6 +68,32 @@ export async function loadHeaderFooter() {
   updateCartCount();
 }
 
+// Display alert message at top of main element
+export function alertMessage(message, scroll = true, type = "error") {
+  // Remove any existing alerts first
+  const existingAlerts = document.querySelectorAll(".alert");
+  existingAlerts.forEach((alert) => alert.remove());
+
+  const alertEl = document.createElement("div");
+  alertEl.className = type === "success" ? "alert alert-success" : "alert";
+
+  alertEl.innerHTML = `
+    <span>${message}</span>
+    <button class="close-alert">X</button>
+  `;
+
+  alertEl.querySelector(".close-alert").addEventListener("click", () => {
+    alertEl.remove();
+  });
+
+  const main = document.querySelector("main");
+  main.prepend(alertEl);
+
+  if (scroll) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
 // Update cart badge count
 export function updateCartCount() {
   const cartItems = getLocalStorage("so-cart") || [];

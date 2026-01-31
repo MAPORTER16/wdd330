@@ -1,4 +1,4 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, alertMessage } from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
 
 function formDataToJSON(formElement) {
@@ -88,7 +88,24 @@ export default class CheckoutProcess {
     json.shipping = this.shipping;
     json.items = packageItems(this.list);
 
-    const response = await this.externalServices.checkout(json);
-    return response;
+    try {
+      const response = await this.externalServices.checkout(json);
+      // Happy path: clear cart and redirect to success page
+      setLocalStorage("so-cart", []);
+      window.location.assign("/checkout/success.html");
+      return response;
+    } catch (err) {
+      // Unhappy path: display error messages
+      if (err.name === "servicesError") {
+        const message = err.message;
+        if (typeof message === "object" && message.message) {
+          alertMessage(message.message);
+        } else {
+          alertMessage("There was a problem placing your order. Please try again.");
+        }
+      } else {
+        alertMessage("There was a problem placing your order. Please try again.");
+      }
+    }
   }
 }

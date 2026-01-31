@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage, updateCartCount } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, updateCartCount, alertMessage } from "./utils.mjs";
 
 export default class ProductDetails {
 
@@ -25,6 +25,7 @@ export default class ProductDetails {
         cartItems.push(this.product);
         setLocalStorage("so-cart", cartItems);
         updateCartCount();
+        alertMessage(`${this.product.NameWithoutBrand} added to cart!`, false, "success");
     }
 
     renderProductDetails() {
