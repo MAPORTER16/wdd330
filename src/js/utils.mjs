@@ -70,6 +70,9 @@ export async function loadHeaderFooter() {
 
   // Initialize back to top button
   initBackToTop();
+
+  // Initialize dark mode toggle
+  initDarkMode();
 }
 
 // Update cart badge count
@@ -113,4 +116,79 @@ export function initBackToTop() {
   backToTopBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+}
+
+// Initialize dark mode toggle in header
+export function initDarkMode() {
+  const header = document.querySelector("#main-header");
+  if (!header || header.querySelector(".dark-mode-toggle")) return;
+
+  const toggle = document.createElement("button");
+  toggle.className = "dark-mode-toggle";
+  toggle.setAttribute("aria-label", "Toggle dark mode");
+  toggle.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+    </svg>
+  `;
+  header.insertBefore(toggle, header.querySelector(".cart"));
+
+  // Restore saved preference
+  if (localStorage.getItem("dark-mode") === "true") {
+    document.body.classList.add("dark-mode");
+  }
+
+  toggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("dark-mode", document.body.classList.contains("dark-mode"));
+  });
+}
+
+// Save a product to recently viewed list
+export function addToRecentlyViewed(product) {
+  const key = "recently-viewed";
+  let viewed = JSON.parse(localStorage.getItem(key)) || [];
+  // Remove if already exists
+  viewed = viewed.filter((p) => p.Id !== product.Id);
+  // Add to front
+  viewed.unshift({
+    Id: product.Id,
+    Name: product.NameWithoutBrand,
+    Image: product.Images?.PrimaryMedium || product.Image,
+    FinalPrice: product.FinalPrice,
+  });
+  // Keep max 6
+  viewed = viewed.slice(0, 6);
+  localStorage.setItem(key, JSON.stringify(viewed));
+}
+
+// Render recently viewed products section
+export function renderRecentlyViewed(parentSelector = "main") {
+  const key = "recently-viewed";
+  const viewed = JSON.parse(localStorage.getItem(key)) || [];
+  if (viewed.length === 0) return;
+
+  const parent = document.querySelector(parentSelector);
+  if (!parent || parent.querySelector(".recently-viewed")) return;
+
+  const section = document.createElement("section");
+  section.className = "recently-viewed";
+  section.innerHTML = `
+    <h3>Recently Viewed</h3>
+    <ul class="recently-viewed-list">
+      ${viewed
+        .map(
+          (p) => `
+        <li>
+          <a href="/product_pages/?product=${p.Id}">
+            <img src="${p.Image}" alt="${p.Name}">
+            <p>${p.Name}</p>
+            <p><strong>$${p.FinalPrice}</strong></p>
+          </a>
+        </li>`
+        )
+        .join("")}
+    </ul>
+  `;
+  parent.appendChild(section);
 }
